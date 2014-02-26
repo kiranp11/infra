@@ -1,0 +1,31 @@
+---
+- hosts: all
+  user: vagrant
+  sudo: True
+
+  vars:
+
+    version: 7u51
+    jre_filename: "jre-{{version}}-linux-x64.rpm"
+
+    build: b13
+    jre_install_dir: /usr/java/jre1.7.0_06
+
+    jre_download_url: "http://download.oracle.com/otn-pub/java/jdk/{{version}}-{{build}}/{{jre_filename}}"
+
+    jre_rpm: /tmp/{{ jre_filename }}
+
+  tasks:
+
+  - name: Download JRE
+    shell: wget --no-cookies  --no-check-certificate --output-document {{ jre_rpm }} --header 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F' {{ jre_download_url }} creates={{ jre_rpm }}
+ 
+  - name: Install JRE
+    shell: yum -y --nogpgcheck localinstall {{ jre_rpm }} creates= {{ jre_install_dir }}
+
+  - name: Update alternatives
+    shell: |
+      /usr/sbin/alternatives --install /usr/bin/java java {{ jre_install_dir}}/bin/java 20000 &&
+      /usr/sbin/alternatives --install /usr/bin/jar jar {{ jre_install_dir }}/bin/jar 20000
+
+
