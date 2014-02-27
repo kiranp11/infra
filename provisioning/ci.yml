@@ -1,4 +1,4 @@
 ---
-- include: install-java.yml
-- include: install-go.yml
+- include: java/install-java.yml
+- include: go/install-go.yml
 
