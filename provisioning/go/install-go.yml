@@ -10,7 +10,7 @@
     - template: src=templates/go-server dest=/etc/default/go-server
 
     - name: download go server
-      shell: wget http://download01.thoughtworks.com/go/13.4.1/ga/go-server-13.4.1-18342.noarch.rpm -O /tmp/go_server.rpm creates=/tmp/go_server.rpm
+      shell: wgallet http://download01.thoughtworks.com/go/13.4.1/ga/go-server-13.4.1-18342.noarch.rpm -O /tmp/go_server.rpm creates=/tmp/go_server.rpm
 
     - name: download go agent
       shell: wget http://download01.thoughtworks.com/go/13.4.1/ga/go-agent-13.4.1-18342.noarch.rpm -O /tmp/go_agent.rpm creates=/tmp/go_agent.rpm
@@ -20,6 +20,9 @@
 
     - name: install go agent
       shell: rpm -Uvh /tmp/go_agent.rpm creates=/var/lib/go-agent/
+
+    - name: start go server
+      service: name=go-server state=started
 
   handlers:
     - name: restart ntpd
